@@ -94,7 +94,17 @@ function timelineEntryIsActive(entry: TimelineEvent): boolean {
   return activeTimelineEntry.value?.id === entry.id;
 }
 
-const intentStatusLabel = (i: { to: string | null; worker: string | null; description: string; from: string[]; creator: string }) => {
+type IntentLite = {
+  to: string | null;
+  worker: string | null;
+  description: string;
+  from: string[];
+  creator: string;
+};
+
+const projectStatus = computed(() => projects.project?.project.status);
+
+const intentStatusLabel = (i: IntentLite) => {
   if (i.to) return '已结案';
   if (
     i.description === 'bootstrap' &&
@@ -104,9 +114,13 @@ const intentStatusLabel = (i: { to: string | null; worker: string | null; descri
   ) {
     return i.worker ? '启动中' : '启动待执行';
   }
+  // 项目已完成 / 已暂停时，未结案的意图实际上不再被消费，
+  // 用「未参与完成」/「已搁置」更贴近语义，避免出现"项目跑完了还未认领"的歧义。
+  if (projectStatus.value === 'completed') return '未参与完成';
+  if (projectStatus.value === 'stopped') return i.worker ? '已暂停' : '已搁置';
   return i.worker ? '进行中' : '未认领';
 };
-const intentStatusClass = (i: { to: string | null; worker: string | null; description: string; from: string[]; creator: string }) => {
+const intentStatusClass = (i: IntentLite) => {
   if (i.to) return 'text-teal-600';
   if (
     i.description === 'bootstrap' &&
@@ -115,6 +129,9 @@ const intentStatusClass = (i: { to: string | null; worker: string | null; descri
     i.from[0] === 'origin'
   ) {
     return i.worker ? 'text-orange-600' : 'text-orange-400';
+  }
+  if (projectStatus.value === 'completed' || projectStatus.value === 'stopped') {
+    return 'text-slate-400';
   }
   return i.worker ? 'text-amber-600' : 'text-slate-400';
 };

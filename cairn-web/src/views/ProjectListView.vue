@@ -207,7 +207,7 @@ async function stopAll() {
                 </svg>
               </button>
             </div>
-            <div class="mt-3 flex flex-wrap items-center gap-1.5">
+            <div v-if="p.status !== 'completed'" class="mt-3 flex flex-wrap items-center gap-1.5">
               <div
                 v-if="p.reason"
                 class="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[10px] font-medium text-sky-700 reason-chip-running"
@@ -239,14 +239,16 @@ async function stopAll() {
           </div>
 
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-400">
-            <span v-if="p.working_intent_count > 0" class="inline-flex items-center gap-1 text-amber-500">
-              <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-              进行中 {{ p.working_intent_count }}
-            </span>
-            <span v-if="p.unclaimed_intent_count > 0" class="inline-flex items-center gap-1 text-slate-500">
-              <span class="h-1.5 w-1.5 rounded-full bg-slate-300"></span>
-              未认领 {{ p.unclaimed_intent_count }}
-            </span>
+            <template v-if="p.status !== 'completed'">
+              <span v-if="p.working_intent_count > 0" class="inline-flex items-center gap-1 text-amber-500">
+                <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                进行中 {{ p.working_intent_count }}
+              </span>
+              <span v-if="p.unclaimed_intent_count > 0" class="inline-flex items-center gap-1 text-slate-500">
+                <span class="h-1.5 w-1.5 rounded-full bg-slate-300"></span>
+                未认领 {{ p.unclaimed_intent_count }}
+              </span>
+            </template>
             <span class="ml-auto text-[11px] text-slate-400">{{ formatDate(p.created_at) }}</span>
           </div>
 
