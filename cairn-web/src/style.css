@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+#cy {
+  width: 100%;
+  height: 100%;
+}
+
+/* 品牌字：纯净深色，靠字距/字重塑造质感 */
+.brand-wordmark {
+  color: #0f172a;
+  letter-spacing: -0.012em;
+  font-weight: 700;
+}
+
+/* 品牌 logo 容器：白底 + 浅边框，无渐变 */
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.overlay {
+  background: rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+@keyframes reasonChipGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.18);
+  }
+}
+.reason-chip-running {
+  animation: reasonChipGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes intentChipGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.18);
+  }
+}
+.intent-chip-running {
+  animation: intentChipGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes reasonBeaconPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.reason-beacon {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #0ea5e9;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.16);
+}
+.reason-beacon::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(14, 165, 233, 0.34);
+  animation: reasonBeaconPulse 1.8s ease-out infinite;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 160ms ease;
+}
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+/* SidePanel 顶部的时间线摘要面板的呼出动效 */
+.summary-enter-active,
+.summary-leave-active {
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    max-height 200ms ease;
+  overflow: hidden;
+}
+.summary-enter-from,
+.summary-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+  max-height: 0;
+}
+.summary-enter-to,
+.summary-leave-from {
+  opacity: 1;
+  max-height: 220px;
+}

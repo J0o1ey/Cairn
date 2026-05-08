@@ -1,0 +1,12 @@
+/// <reference types="vite/client" />
+
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue';
+  const component: DefineComponent<object, object, unknown>;
+  export default component;
+}
+
+declare module 'cytoscape-dagre';
+declare module 'cytoscape-klay';
+declare module 'cytoscape-elk';
+declare module 'klayjs';

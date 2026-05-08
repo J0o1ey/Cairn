@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -239,19 +239,19 @@
     </div>
     <div class="flex-1"></div>
     <div class="flex items-center gap-3 text-[11px] text-slate-400">
-      <span class="inline-flex items-center gap-1.5 shrink-0" title="All projects">
-        <span class="font-medium uppercase tracking-[0.12em] text-slate-400">All</span>
+      <span class="inline-flex items-center gap-1.5 shrink-0" title="全部项目">
+        <span class="font-medium uppercase tracking-[0.12em] text-slate-400">全部</span>
         <span class="font-semibold text-slate-600 tabular-nums" x-text="projects.length"></span>
       </span>
-      <span class="inline-flex items-center gap-1.5 shrink-0" title="Active projects">
+      <span class="inline-flex items-center gap-1.5 shrink-0" title="进行中的项目">
         <span class="h-1.5 w-1.5 rounded-full bg-teal-500"></span>
         <span class="font-semibold text-teal-700 tabular-nums" x-text="countProjectsByStatus('active')"></span>
       </span>
-      <span class="inline-flex items-center gap-1.5 shrink-0" title="Stopped projects">
+      <span class="inline-flex items-center gap-1.5 shrink-0" title="已暂停的项目">
         <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
         <span class="font-semibold text-amber-700 tabular-nums" x-text="countProjectsByStatus('stopped')"></span>
       </span>
-      <span class="inline-flex items-center gap-1.5 shrink-0" title="Completed projects">
+      <span class="inline-flex items-center gap-1.5 shrink-0" title="已完成的项目">
         <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
         <span class="font-semibold text-slate-600 tabular-nums" x-text="countProjectsByStatus('completed')"></span>
       </span>
@@ -259,15 +259,15 @@
         @click="stopAllActiveProjects()"
         :disabled="!hasActiveProjects() || isStoppingAllProjects"
         class="h-7 px-2.5 rounded-lg border border-amber-200 text-xs text-amber-700 hover:bg-amber-50 transition inline-flex items-center gap-1.5 shrink-0 disabled:cursor-not-allowed disabled:opacity-40"
-        title="Stop all active projects">
+        title="暂停所有进行中的项目">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
-        <span x-text="isStoppingAllProjects ? 'Stopping...' : 'Stop Active'"></span>
+        <span x-text="isStoppingAllProjects ? '暂停中...' : '暂停全部'"></span>
       </button>
     </div>
     <div class="flex items-center gap-1.5">
       <button @click="showNewProject = true" class="h-7 px-2.5 rounded-lg border border-brand-200 text-xs text-brand-600 hover:bg-brand-50 transition inline-flex items-center gap-1.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-        New Project
+        新建项目
       </button>
     </div>
     <div class="flex items-center gap-1.5 ml-1">
@@ -284,8 +284,8 @@
     <template x-if="projects.length === 0">
       <div class="flex flex-col items-center justify-center h-full text-slate-400">
         <img src="/static/favicon.svg" alt="" class="w-20 h-20 mb-5 opacity-30">
-        <p class="text-lg font-medium text-slate-500">No projects yet</p>
-        <p class="text-sm mt-1">Create a project to start exploring</p>
+        <p class="text-lg font-medium text-slate-500">暂无项目</p>
+        <p class="text-sm mt-1">创建一个项目，开启探索之旅</p>
       </div>
     </template>
 
@@ -295,9 +295,9 @@
           class="group h-full flex flex-col bg-white rounded-2xl border border-slate-200/60 p-5 cursor-pointer transition-all duration-200 hover:shadow-lg hover:shadow-slate-200/50 hover:border-slate-300 hover:-translate-y-0.5">
           <div class="flex items-start justify-between mb-3">
             <span class="text-[11px] font-mono text-slate-400 tracking-wide" x-text="p.id"></span>
-            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-[0.12em]"
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-semibold tracking-[0.06em]"
               :class="projectStatusBadgeClass(p.status)"
-              x-text="p.status"></span>
+              x-text="projectStatusLabel(p.status)"></span>
           </div>
           <div class="mb-3 flex-1">
             <div class="title-action-trigger flex items-start gap-2">
@@ -305,8 +305,8 @@
               <button type="button"
                 @click.stop="openRenameProject(p.id, p.title)"
                 class="title-action-button mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400"
-                title="Rename project"
-                :aria-label="`Rename ${p.title}`">
+                title="重命名项目"
+                :aria-label="`重命名 ${p.title}`">
                 <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="m16.862 4.487 1.65-1.65a1.875 1.875 0 1 1 2.652 2.652l-9.193 9.193a4.5 4.5 0 0 1-1.897 1.13L6 17l1.188-4.074a4.5 4.5 0 0 1 1.13-1.897l8.544-8.542Z"/><path d="M19.5 7.125 16.875 4.5"/><path d="M5.25 18.75h13.5"/></svg>
               </button>
             </div>
@@ -360,8 +360,15 @@
               <button type="button" @click.stop="viewProjectYaml(p.id, p.title)"
                 class="px-2 py-1 rounded-lg border border-slate-200 text-[11px] text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition flex items-center gap-1">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M14.25 3H7.5A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h9a2.25 2.25 0 0 0 2.25-2.25V8.25L14.25 3Z"/><path d="M14.25 3v5.25h4.5"/><path d="M8.25 12h7.5M8.25 15h5.25"/></svg>
-                Snapshot
+                快照
               </button>
+              <template x-if="p.status === 'completed'">
+                <button type="button" @click.stop="viewProjectReport(p.id, p.title)"
+                  class="px-2 py-1 rounded-lg border border-emerald-200 text-[11px] text-emerald-600 hover:bg-emerald-50 transition flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6M7 8h10M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+                  中文报告
+                </button>
+              </template>
               <template x-if="p.status !== 'completed'">
                 <button type="button" @click.stop="toggleProjectStopById(p.id, p.status)"
                   class="px-2 py-1 rounded-lg border text-[11px] transition flex items-center gap-1"
@@ -370,20 +377,20 @@
                     : 'border-teal-200 text-teal-600 hover:bg-teal-50'">
                   <svg x-show="p.status === 'active'" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
                   <svg x-show="p.status === 'stopped'" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></svg>
-                  <span x-text="p.status === 'active' ? 'Stop' : 'Resume'"></span>
+                  <span x-text="p.status === 'active' ? '暂停' : '继续'"></span>
                 </button>
               </template>
               <template x-if="p.status === 'completed'">
                 <button type="button" @click.stop="openReopenProject(p.id, p.title)"
                   class="px-2 py-1 rounded-lg border border-sky-200 text-[11px] text-sky-600 hover:bg-sky-50 transition flex items-center gap-1">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.708"/><path d="M3 3v6h6"/></svg>
-                  Reopen
+                  重新打开
                 </button>
               </template>
               <button type="button" @click.stop="deleteProjectById(p.id, p.title)"
                 class="px-2 py-1 rounded-lg border border-rose-200 text-[11px] text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition flex items-center gap-1">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4.75A1.75 1.75 0 0 1 9.75 3h4.5A1.75 1.75 0 0 1 16 4.75V6"/><path d="M19 6l-.63 11.338A2 2 0 0 1 16.37 19.5H7.63a2 2 0 0 1-1.997-2.162L5 6"/><path d="M10 10.5v5"/><path d="M14 10.5v5"/></svg>
-                Delete
+                删除
               </button>
             </div>
           </div>
@@ -405,50 +412,56 @@
       <h2 class="text-[15px] font-semibold text-slate-700 truncate" x-text="project.project.title"></h2>
       <button x-show="!replay.active" @click="openRenameProject(project.project.id, project.project.title)"
         class="title-action-button inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400"
-        title="Rename project"
-        :aria-label="`Rename ${project.project.title}`">
+        title="重命名项目"
+        :aria-label="`重命名 ${project.project.title}`">
         <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="m16.862 4.487 1.65-1.65a1.875 1.875 0 1 1 2.652 2.652l-9.193 9.193a4.5 4.5 0 0 1-1.897 1.13L6 17l1.188-4.074a4.5 4.5 0 0 1 1.13-1.897l8.544-8.542Z"/><path d="M19.5 7.125 16.875 4.5"/><path d="M5.25 18.75h13.5"/></svg>
       </button>
-      <span class="px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-[0.12em] shrink-0"
+      <span class="px-1.5 py-0.5 rounded-full text-[9px] font-semibold tracking-[0.06em] shrink-0"
         :class="projectStatusBadgeClass(project.project.status)"
-        x-text="project.project.status"></span>
+        x-text="projectStatusLabel(project.project.status)"></span>
     </div>
     <div class="flex-1"></div>
     <div class="flex items-center gap-4 text-xs text-slate-400">
-      <span x-text="`${project.facts.length} facts`"></span>
-      <span x-text="`${project.intents.length} intents`"></span>
+      <span x-text="`${project.facts.length} 事实`"></span>
+      <span x-text="`${project.intents.length} 意图`"></span>
     </div>
     <div class="flex items-center gap-1.5">
       <template x-if="!replay.active">
         <button @click="startProjectReplay()" class="px-2.5 py-1 rounded-lg border border-violet-200 text-xs text-violet-600 hover:bg-violet-50 transition flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/><path d="M4 5v14"/></svg>
-          Replay
+          回放
         </button>
       </template>
       <template x-if="replay.active">
         <div class="flex items-center gap-1.5 rounded-xl border border-violet-200 bg-violet-50/80 px-2 py-1 text-xs text-violet-700">
           <span class="font-medium whitespace-nowrap" x-text="replayProgressLabel()"></span>
-          <button @click="toggleProjectReplayPlayback()" class="inline-flex h-6 w-6 items-center justify-center rounded-md border border-violet-200 bg-white/80 hover:bg-white transition" :title="replay.playing ? 'Pause replay' : 'Resume replay'">
+          <button @click="toggleProjectReplayPlayback()" class="inline-flex h-6 w-6 items-center justify-center rounded-md border border-violet-200 bg-white/80 hover:bg-white transition" :title="replay.playing ? '暂停回放' : '继续回放'">
             <svg x-show="replay.playing" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 6h3v12H8zM13 6h3v12h-3z"/></svg>
             <svg x-show="!replay.playing" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></svg>
           </button>
-          <button @click="restartProjectReplay()" class="inline-flex h-6 w-6 items-center justify-center rounded-md border border-violet-200 bg-white/80 hover:bg-white transition" title="Restart replay">
+          <button @click="restartProjectReplay()" class="inline-flex h-6 w-6 items-center justify-center rounded-md border border-violet-200 bg-white/80 hover:bg-white transition" title="重新开始回放">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.708"/><path d="M3 3v6h6"/></svg>
           </button>
           <select x-model="replay.stepMs" @change="updateReplaySpeed()" class="h-6 rounded-md border border-violet-200 bg-white/80 px-1.5 text-[11px] text-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-100">
-            <option value="700">Fast</option>
-            <option value="1100">Normal</option>
-            <option value="1600">Slow</option>
+            <option value="700">快速</option>
+            <option value="1100">正常</option>
+            <option value="1600">慢速</option>
           </select>
           <button @click="exitProjectReplay()" class="inline-flex h-6 items-center justify-center rounded-md border border-violet-200 bg-white/80 px-2 hover:bg-white transition">
-            Exit
+            退出
           </button>
         </div>
       </template>
       <button @click="viewProjectYaml(selectedProjectId, project.project.title)" class="px-2.5 py-1 rounded-lg border border-slate-200 text-xs text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition flex items-center gap-1.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M14.25 3H7.5A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h9a2.25 2.25 0 0 0 2.25-2.25V8.25L14.25 3Z"/><path d="M14.25 3v5.25h4.5"/><path d="M8.25 12h7.5M8.25 15h5.25"/></svg>
-        Snapshot
+        快照
       </button>
+      <template x-if="!replay.active && project.project.status === 'completed'">
+        <button @click="viewProjectReport(selectedProjectId, project.project.title)" class="px-2.5 py-1 rounded-lg border border-emerald-200 text-xs text-emerald-600 hover:bg-emerald-50 transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6M7 8h10M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+          中文报告
+        </button>
+      </template>
       <template x-if="!replay.active && project.project.status !== 'completed'">
         <button @click="toggleProjectStop()"
           class="px-2.5 py-1 rounded-lg border text-xs transition flex items-center gap-1.5"
@@ -457,19 +470,19 @@
             : 'border-teal-200 text-teal-600 hover:bg-teal-50'">
           <svg x-show="project.project.status === 'active'" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
           <svg x-show="project.project.status === 'stopped'" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></svg>
-          <span x-text="project.project.status === 'active' ? 'Stop' : 'Resume'"></span>
+          <span x-text="project.project.status === 'active' ? '暂停' : '继续'"></span>
         </button>
       </template>
       <template x-if="!replay.active && project.project.status === 'completed'">
         <button @click="openReopenProject(project.project.id, project.project.title)"
           class="px-2.5 py-1 rounded-lg border border-sky-200 text-xs text-sky-600 hover:bg-sky-50 transition flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.708"/><path d="M3 3v6h6"/></svg>
-          Reopen
+          重新打开
         </button>
       </template>
       <button x-show="!replay.active" @click="deleteProject()" class="px-2.5 py-1 rounded-lg border border-rose-200 text-xs text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition flex items-center gap-1.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4.75A1.75 1.75 0 0 1 9.75 3h4.5A1.75 1.75 0 0 1 16 4.75V6"/><path d="M19 6l-.63 11.338A2 2 0 0 1 16.37 19.5H7.63a2 2 0 0 1-1.997-2.162L5 6"/><path d="M10 10.5v5"/><path d="M14 10.5v5"/></svg>
-        Delete
+        删除
       </button>
     </div>
     <div class="flex items-center gap-1.5 ml-1">
@@ -486,17 +499,18 @@
     <!-- Graph -->
     <div class="flex-1 relative min-w-0">
       <div class="absolute top-3 left-3 z-10 flex items-center gap-1.5">
-        <button @click="fitGraph()" class="h-7 w-7 bg-white/90 backdrop-blur rounded-lg shadow-sm border border-slate-200/60 text-slate-500 hover:text-slate-700 hover:bg-white transition inline-flex items-center justify-center" title="Fit graph" aria-label="Fit graph">
+        <button @click="fitGraph()" class="h-7 w-7 bg-white/90 backdrop-blur rounded-lg shadow-sm border border-slate-200/60 text-slate-500 hover:text-slate-700 hover:bg-white transition inline-flex items-center justify-center" title="适应视口" aria-label="适应视口">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
         </button>
         <select x-model="layoutMode" @change="applySelectedLayout()"
-          class="h-7 bg-white/90 backdrop-blur rounded-lg shadow-sm border border-slate-200/60 px-2.5 text-xs text-slate-600 hover:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-300 transition">
-          <option value="dagre_tb">Dagre ↓</option>
-          <option value="dagre_lr">Dagre →</option>
-          <option value="klay_tb">Klay ↓</option>
-          <option value="klay_lr">Klay →</option>
-          <option value="elk_tb">ELK ↓</option>
-          <option value="elk_lr">ELK →</option>
+          class="h-7 bg-white/90 backdrop-blur rounded-lg shadow-sm border border-slate-200/60 px-2.5 text-xs text-slate-600 hover:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-300 transition"
+          title="布局算法">
+          <option value="dagre_tb">Dagre 自上而下 ↓</option>
+          <option value="dagre_lr">Dagre 从左到右 →</option>
+          <option value="klay_tb">Klay 自上而下 ↓</option>
+          <option value="klay_lr">Klay 从左到右 →</option>
+          <option value="elk_tb">ELK 自上而下 ↓</option>
+          <option value="elk_lr">ELK 从左到右 →</option>
         </select>
       </div>
 
@@ -506,11 +520,11 @@
             <div class="flex items-start gap-3">
               <span class="reason-beacon mt-1 shrink-0"></span>
               <div class="min-w-0">
-                <div class="text-[10px] font-semibold uppercase tracking-[0.18em] text-sky-500">Reason Running</div>
+                <div class="text-[10px] font-semibold tracking-[0.12em] text-sky-500">推理进行中</div>
                 <div class="mt-0.5 text-sm font-semibold text-slate-700 truncate" x-text="project.project.reason.worker"></div>
                 <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500">
-                  <span x-show="project.project.reason.trigger" x-text="`Trigger ${project.project.reason.trigger}`"></span>
-                  <span x-text="`Heartbeat ${formatTime(project.project.reason.last_heartbeat_at)}`"></span>
+                  <span x-show="project.project.reason.trigger" x-text="`触发 ${project.project.reason.trigger}`"></span>
+                  <span x-text="`心跳 ${formatTime(project.project.reason.last_heartbeat_at)}`"></span>
                 </div>
               </div>
             </div>
@@ -532,19 +546,19 @@
           <button @click="openCreateIntent()" :disabled="!canActOnSelectedFacts()"
             class="px-3 py-1.5 bg-white/90 backdrop-blur border border-brand-200 text-brand-600 rounded-lg shadow-sm text-xs font-medium hover:bg-brand-50 transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-            Intent
+            意图
           </button>
           <button @click="openCompleteProject()" :disabled="!canActOnSelectedFacts()"
             class="px-3 py-1.5 bg-white/90 backdrop-blur border border-teal-200 text-teal-600 rounded-lg shadow-sm text-xs font-medium hover:bg-teal-50 transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
-            Complete
+            完成项目
           </button>
         </div>
         <div class="flex gap-1.5" x-show="projectCanWriteHints()">
           <button @click="openHintModal()"
             class="px-3 py-1.5 bg-white/90 backdrop-blur border border-amber-200 text-amber-600 rounded-lg shadow-sm text-xs font-medium hover:bg-amber-50 transition flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547Z"/></svg>
-            Hint
+            提示
           </button>
         </div>
         <div class="flex gap-1.5" x-show="projectIsActive()">
@@ -556,12 +570,12 @@
           <button @click="releaseSelectedIntent()" :disabled="!selectedReleasableOpenIntentRecord()"
             class="px-3 py-1.5 bg-white/90 backdrop-blur border border-amber-200 text-amber-700 rounded-lg shadow-sm text-xs font-medium hover:bg-amber-50 transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 10V7.75A3.75 3.75 0 1 1 16.5 7"/><path d="M7.5 10.5h9A1.5 1.5 0 0 1 18 12v6A1.5 1.5 0 0 1 16.5 19.5h-9A1.5 1.5 0 0 1 6 18v-6A1.5 1.5 0 0 1 7.5 10.5Z"/><path d="M12 14.25v1.5"/></svg>
-            Release
+            释放
           </button>
           <button @click="selectedActionableOpenIntentRecord() && openConclude(selectedActionableOpenIntentRecord())" :disabled="!selectedActionableOpenIntentRecord()"
             class="px-3 py-1.5 bg-white/90 backdrop-blur border border-teal-200 text-teal-600 rounded-lg shadow-sm text-xs font-medium hover:bg-teal-50 transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.25 3H7.5A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h9a2.25 2.25 0 0 0 2.25-2.25V8.25L14.25 3Z"/><path d="M14.25 3v5.25h4.5"/><path d="M9 13.5 10.875 15.375 15 11.25"/></svg>
-            Conclude
+            结案
           </button>
         </div>
       </div>
@@ -577,21 +591,21 @@
     <div class="border-l border-slate-200/60 bg-white flex flex-col overflow-hidden shrink-0 relative z-20" :style="{ width: sidePanelWidth + 'px', minWidth: sidePanelWidth + 'px', flexBasis: sidePanelWidth + 'px' }">
       <div class="flex border-b border-slate-100 shrink-0">
         <button @click="sideTab = 'detail'" class="flex-1 px-3 py-2.5 text-xs font-medium transition"
-          :class="sideTab === 'detail' ? 'text-brand-600 border-b-2 border-brand-500' : 'text-slate-400 hover:text-slate-600'">Detail</button>
+          :class="sideTab === 'detail' ? 'text-brand-600 border-b-2 border-brand-500' : 'text-slate-400 hover:text-slate-600'">详情</button>
         <button @click="sideTab = 'hints'" class="flex-1 px-3 py-2.5 text-xs font-medium transition"
           :class="sideTab === 'hints' ? 'text-brand-600 border-b-2 border-brand-500' : 'text-slate-400 hover:text-slate-600'">
-          Hints <span class="ml-0.5 text-[10px] opacity-60" x-text="project.hints.length"></span>
+          提示 <span class="ml-0.5 text-[10px] opacity-60" x-text="project.hints.length"></span>
         </button>
         <button @click="sideTab = 'log'" class="flex-1 px-3 py-2.5 text-xs font-medium transition"
-          :class="sideTab === 'log' ? 'text-brand-600 border-b-2 border-brand-500' : 'text-slate-400 hover:text-slate-600'">Log</button>
+          :class="sideTab === 'log' ? 'text-brand-600 border-b-2 border-brand-500' : 'text-slate-400 hover:text-slate-600'">日志</button>
       </div>
 
       <!-- Detail -->
       <div x-show="sideTab === 'detail'" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/40">
         <template x-if="!selectedNode">
           <div class="rounded-2xl border border-dashed border-slate-200 bg-white/80 px-5 py-10 text-center shadow-sm">
-            <p class="text-sm text-slate-400">Click a node or edge</p>
-            <p class="text-xs text-slate-300 mt-1">Shift+click for multi-select</p>
+            <p class="text-sm text-slate-400">点击节点或边查看详情</p>
+            <p class="text-xs text-slate-300 mt-1">按住 Shift 可多选</p>
           </div>
         </template>
         <template x-if="selectedNode && selectedNode.type === 'fact' && selectedFacts.length > 1">
@@ -607,23 +621,23 @@
                           'bg-rose-50 text-rose-600': fact.id === 'goal',
                           'bg-brand-50 text-brand-700': fact.id !== 'origin' && fact.id !== 'goal'
                         }" x-text="fact.id"></span>
-                      <span class="text-[11px] text-slate-400 uppercase tracking-wider">Fact</span>
+                      <span class="text-[11px] text-slate-400 uppercase tracking-wider">事实</span>
                     </div>
                     <button type="button" @click="removeFactSelection(fact.id)"
-                      class="text-[11px] text-slate-400 hover:text-slate-600 transition">Remove</button>
+                      class="text-[11px] text-slate-400 hover:text-slate-600 transition">移除</button>
                   </div>
                 </div>
                 <div class="p-4 space-y-3">
                   <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap break-words" x-text="fact.description"></p>
                   <div class="text-xs text-slate-400 space-y-1.5">
                     <template x-if="fact.id === 'origin'">
-                      <p>Project starting point</p>
+                      <p>项目起点</p>
                     </template>
                     <template x-if="fact.id === 'goal'">
-                      <p>Project target fact</p>
+                      <p>项目目标事实</p>
                     </template>
                     <template x-if="fact.id !== 'origin' && fact.id !== 'goal' && getProducingIntent(fact.id)">
-                      <p x-text="`Produced by ${getProducingIntent(fact.id).id} from ${getProducingIntent(fact.id).from.join(', ')}`"></p>
+                      <p x-text="`由 ${getProducingIntent(fact.id).id} 从 ${getProducingIntent(fact.id).from.join(', ')} 推导得出`"></p>
                     </template>
                   </div>
                 </div>
@@ -641,7 +655,7 @@
                     'bg-rose-50 text-rose-600': selectedFactId() === 'goal',
                     'bg-brand-50 text-brand-700': selectedFactId() !== 'origin' && selectedFactId() !== 'goal'
                   }" x-text="selectedFactId()"></span>
-                <span class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Fact</span>
+                <span class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">事实</span>
               </div>
             </div>
             <div class="p-4 space-y-4">
@@ -649,31 +663,31 @@
               <div class="space-y-3 text-xs">
                 <template x-if="selectedFactId() === 'origin'">
                   <div class="pt-4 border-t border-slate-100">
-                    <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-3">Origin</p>
-                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Role</span><span class="text-slate-600 text-right break-words">Project starting point</span></div>
+                    <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-3">起点</p>
+                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">角色</span><span class="text-slate-600 text-right break-words">项目起点</span></div>
                   </div>
                 </template>
                 <template x-if="selectedFactId() === 'goal'">
                   <div class="pt-4 border-t border-slate-100 space-y-3">
-                    <p class="text-[10px] font-semibold text-rose-500 uppercase tracking-widest">Goal</p>
-                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Role</span><span class="text-slate-600 text-right break-words">Project target fact</span></div>
+                    <p class="text-[10px] font-semibold text-rose-500 uppercase tracking-widest">目标</p>
+                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">角色</span><span class="text-slate-600 text-right break-words">项目目标事实</span></div>
                     <template x-if="selectedFactProducingIntent()">
                       <div class="pt-1 space-y-3">
-                        <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Completed By</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().id"></span></div>
-                        <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Worker</span><span class="text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().worker || '—'"></span></div>
-                        <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Concluded</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedFactProducingIntent().concluded_at || selectedFactProducingIntent().created_at)"></span></div>
+                        <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">完成意图</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().id"></span></div>
+                        <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">执行者</span><span class="text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().worker || '—'"></span></div>
+                        <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">结案时间</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedFactProducingIntent().concluded_at || selectedFactProducingIntent().created_at)"></span></div>
                       </div>
                     </template>
                   </div>
                 </template>
                 <template x-if="selectedFactId() !== 'origin' && selectedFactId() !== 'goal' && selectedFactProducingIntent()">
                   <div class="pt-4 border-t border-slate-100 space-y-3">
-                    <p class="text-[10px] font-semibold text-brand-500 uppercase tracking-widest">Produced By</p>
-                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Intent</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().id"></span></div>
-                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">From</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().from.join(', ')"></span></div>
-                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Creator</span><span class="text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().creator"></span></div>
-                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Worker</span><span class="text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().worker || '—'"></span></div>
-                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Concluded</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedFactProducingIntent().concluded_at || selectedFactProducingIntent().created_at)"></span></div>
+                    <p class="text-[10px] font-semibold text-brand-500 uppercase tracking-widest">来源意图</p>
+                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">意图</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().id"></span></div>
+                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">来源</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().from.join(', ')"></span></div>
+                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">提出人</span><span class="text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().creator"></span></div>
+                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">执行者</span><span class="text-slate-600 text-right break-all" x-text="selectedFactProducingIntent().worker || '—'"></span></div>
+                    <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">结案时间</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedFactProducingIntent().concluded_at || selectedFactProducingIntent().created_at)"></span></div>
                   </div>
                 </template>
               </div>
@@ -691,14 +705,14 @@
             <div class="p-4 space-y-4">
               <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap break-words" x-text="selectedIntentRecord().description"></p>
               <div class="pt-4 border-t border-slate-100 space-y-3 text-xs">
-                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">From</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedIntentRecord().from.join(', ')"></span></div>
-                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">To</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedIntentRecord().to || '—'"></span></div>
-                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Creator</span><span class="text-slate-600 text-right break-all" x-text="selectedIntentRecord().creator"></span></div>
-                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Worker</span><span class="text-slate-600 text-right break-all" x-text="selectedIntentRecord().worker || '—'"></span></div>
-                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Heartbeat</span><span class="text-slate-600 text-right break-words" x-text="selectedIntentRecord().last_heartbeat_at ? formatTime(selectedIntentRecord().last_heartbeat_at) : '—'"></span></div>
-                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Created</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedIntentRecord().created_at)"></span></div>
+                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">来源</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedIntentRecord().from.join(', ')"></span></div>
+                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">目标</span><span class="font-mono text-slate-600 text-right break-all" x-text="selectedIntentRecord().to || '—'"></span></div>
+                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">提出人</span><span class="text-slate-600 text-right break-all" x-text="selectedIntentRecord().creator"></span></div>
+                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">执行者</span><span class="text-slate-600 text-right break-all" x-text="selectedIntentRecord().worker || '—'"></span></div>
+                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">心跳</span><span class="text-slate-600 text-right break-words" x-text="selectedIntentRecord().last_heartbeat_at ? formatTime(selectedIntentRecord().last_heartbeat_at) : '—'"></span></div>
+                <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">创建时间</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedIntentRecord().created_at)"></span></div>
                 <template x-if="selectedIntentRecord().concluded_at">
-                  <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">Concluded</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedIntentRecord().concluded_at)"></span></div>
+                  <div class="flex items-start justify-between gap-3"><span class="text-slate-400 shrink-0">结案时间</span><span class="text-slate-600 text-right break-words" x-text="formatTime(selectedIntentRecord().concluded_at)"></span></div>
                 </template>
               </div>
             </div>
@@ -710,7 +724,7 @@
       <div x-show="sideTab === 'hints'" class="flex-1 overflow-y-auto p-4 space-y-3 bg-amber-50/25">
         <template x-if="project.hints.length === 0">
           <div class="rounded-2xl border border-dashed border-amber-200 bg-white/80 px-5 py-10 text-center shadow-sm">
-            <p class="text-sm text-slate-300">No hints yet</p>
+            <p class="text-sm text-slate-300">暂无提示</p>
           </div>
         </template>
         <template x-for="h in project.hints" :key="h.id">
@@ -739,7 +753,7 @@
             <div class="space-y-2.5">
               <div class="space-y-1">
                 <div class="flex items-center justify-between gap-3 text-[11px]">
-                  <span class="text-slate-400">Sequence</span>
+                  <span class="text-slate-400">序号</span>
                   <span class="font-mono text-slate-600" x-text="selectedTimelineSummary().sequenceLabel"></span>
                 </div>
                 <div class="h-1.5 rounded-full bg-slate-100 overflow-hidden">
@@ -748,7 +762,7 @@
               </div>
               <div class="space-y-1">
                 <div class="flex items-center justify-between gap-3 text-[11px]">
-                  <span class="text-slate-400">Time Span</span>
+                  <span class="text-slate-400">时间跨度</span>
                   <span class="font-mono text-slate-600 text-right" x-text="selectedTimelineSummary().timeLabel"></span>
                 </div>
                 <div class="h-1.5 rounded-full bg-slate-100 overflow-hidden">
@@ -759,7 +773,7 @@
           </section>
         </template>
         <template x-if="timelineEvents().length === 0">
-          <p class="text-sm text-slate-300 text-center mt-12">No activity yet</p>
+          <p class="text-sm text-slate-300 text-center mt-12">暂无活动</p>
         </template>
         <template x-for="entry in timelineEvents()" :key="entry.id">
           <div class="flex items-stretch gap-3" :id="timelineEntryDomId(entry.id)">
@@ -796,30 +810,30 @@
 <!-- New Project -->
 <div x-show="showNewProject" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showNewProject = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-4">New Project</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-4">新建项目</h3>
     <div class="space-y-3">
-      <input x-model="newProject.title" placeholder="Project title" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
-      <textarea x-model="newProject.origin" placeholder="Origin — starting point" rows="2" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
-      <textarea x-model="newProject.goal" placeholder="Goal — what to achieve" rows="2" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
+      <input x-model="newProject.title" placeholder="项目标题" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
+      <textarea x-model="newProject.origin" placeholder="起点 — 项目从何处出发" rows="2" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
+      <textarea x-model="newProject.goal" placeholder="目标 — 期望达成什么" rows="2" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
 
       <div>
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Hints (optional)</span>
-          <button type="button" @click="newProject.hints.push({ content: '' })" class="text-[11px] text-brand-500 hover:text-brand-600 font-medium">+ Add</button>
+          <span class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">提示（可选）</span>
+          <button type="button" @click="newProject.hints.push({ content: '' })" class="text-[11px] text-brand-500 hover:text-brand-600 font-medium">+ 添加</button>
         </div>
         <template x-for="(hint, idx) in newProject.hints" :key="idx">
           <div class="flex gap-2 mb-2">
-            <input x-model="hint.content" placeholder="Hint content" class="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
+            <input x-model="hint.content" placeholder="提示内容" class="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
             <button type="button" @click="newProject.hints.splice(idx, 1)" x-show="newProject.hints.length > 1" class="px-2 text-slate-300 hover:text-red-400 transition text-sm">&times;</button>
           </div>
         </template>
-        <p class="text-[11px] text-slate-400">Hint creator uses local actor: <span class="font-medium text-slate-600" x-text="actorName()"></span></p>
+        <p class="text-[11px] text-slate-400">提示创建者使用当前本地账号：<span class="font-medium text-slate-600" x-text="actorName()"></span></p>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showNewProject = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Cancel</button>
+      <button @click="showNewProject = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">取消</button>
       <button @click="createProject()" :disabled="!newProject.title || !newProject.origin || !newProject.goal"
-        class="px-5 py-2 text-sm bg-brand-500 text-white rounded-xl font-medium hover:bg-brand-600 transition disabled:opacity-30 shadow-sm shadow-brand-200">Create</button>
+        class="px-5 py-2 text-sm bg-brand-500 text-white rounded-xl font-medium hover:bg-brand-600 transition disabled:opacity-30 shadow-sm shadow-brand-200">创建</button>
     </div>
   </div>
 </div>
@@ -827,9 +841,9 @@
 <!-- Create Intent -->
 <div x-show="showIntentModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showIntentModal = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-1">New Intent</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-1">新建意图</h3>
     <div class="mb-4">
-      <label class="text-[11px] text-slate-400 mb-1 block font-medium">From facts</label>
+      <label class="text-[11px] text-slate-400 mb-1 block font-medium">起始事实</label>
       <div class="w-full px-3 py-2 border border-slate-200 rounded-xl bg-slate-50 min-h-[42px] flex flex-wrap gap-1.5 items-center">
         <template x-for="fid in selectedFacts" :key="`intent-from-${fid}`">
           <span class="px-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] font-mono text-slate-600" x-text="fid"></span>
@@ -837,17 +851,17 @@
       </div>
     </div>
     <div class="space-y-3">
-      <textarea x-model="intentForm.description" placeholder="What will you explore?" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
+      <textarea x-model="intentForm.description" placeholder="你打算探索什么？" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
       <div class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-500">
-        Actor: <span class="font-medium text-slate-700" x-text="actorName()"></span>
+        操作者：<span class="font-medium text-slate-700" x-text="actorName()"></span>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showIntentModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Cancel</button>
+      <button @click="showIntentModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">取消</button>
       <button @click="createIntent(false)" :disabled="!intentForm.description"
-        class="px-5 py-2 text-sm border border-slate-200 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition disabled:opacity-30">Declare</button>
+        class="px-5 py-2 text-sm border border-slate-200 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition disabled:opacity-30">仅声明</button>
       <button @click="createIntent(true)" :disabled="!intentForm.description"
-        class="px-5 py-2 text-sm bg-brand-500 text-white rounded-xl font-medium hover:bg-brand-600 transition disabled:opacity-30 shadow-sm shadow-brand-200">Declare &amp; Claim</button>
+        class="px-5 py-2 text-sm bg-brand-500 text-white rounded-xl font-medium hover:bg-brand-600 transition disabled:opacity-30 shadow-sm shadow-brand-200">声明并认领</button>
     </div>
   </div>
 </div>
@@ -855,18 +869,18 @@
 <!-- Conclude -->
 <div x-show="showConcludeModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showConcludeModal = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-1">Conclude Intent</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-1">结案意图</h3>
     <p class="text-xs text-slate-400 mb-4 font-mono" x-text="concludeForm.intentId"></p>
     <div class="space-y-3">
-      <textarea x-model="concludeForm.description" placeholder="What did you find? (new fact)" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
+      <textarea x-model="concludeForm.description" placeholder="你发现了什么？（将作为新事实）" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
       <div class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-500">
-        Actor: <span class="font-medium text-slate-700" x-text="actorName()"></span>
+        操作者：<span class="font-medium text-slate-700" x-text="actorName()"></span>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showConcludeModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Cancel</button>
+      <button @click="showConcludeModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">取消</button>
       <button @click="concludeIntent()" :disabled="!concludeForm.description"
-        class="px-5 py-2 text-sm bg-teal-500 text-white rounded-xl font-medium hover:bg-teal-600 transition disabled:opacity-30 shadow-sm shadow-teal-200">Conclude</button>
+        class="px-5 py-2 text-sm bg-teal-500 text-white rounded-xl font-medium hover:bg-teal-600 transition disabled:opacity-30 shadow-sm shadow-teal-200">结案</button>
     </div>
   </div>
 </div>
@@ -874,26 +888,26 @@
 <!-- Complete Project -->
 <div x-show="showCompleteModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showCompleteModal = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-1">Complete Project</h3>
-    <p class="text-xs text-slate-400 mb-4">Mark project as completed</p>
+    <h3 class="text-base font-semibold text-slate-700 mb-1">完成项目</h3>
+    <p class="text-xs text-slate-400 mb-4">将项目标记为已完成</p>
     <div class="space-y-3">
       <div>
-        <label class="text-[11px] text-slate-400 mb-1 block font-medium">From facts</label>
+        <label class="text-[11px] text-slate-400 mb-1 block font-medium">起始事实</label>
         <div class="w-full px-3 py-2 border border-slate-200 rounded-xl bg-slate-50 min-h-[42px] flex flex-wrap gap-1.5 items-center">
           <template x-for="fid in selectedFacts" :key="`complete-from-${fid}`">
             <span class="px-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] font-mono text-slate-600" x-text="fid"></span>
           </template>
         </div>
       </div>
-      <textarea x-model="completeForm.description" placeholder="Why is the goal met?" rows="2" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
+      <textarea x-model="completeForm.description" placeholder="为什么目标已达成？" rows="2" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
       <div class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-500">
-        Actor: <span class="font-medium text-slate-700" x-text="actorName()"></span>
+        操作者：<span class="font-medium text-slate-700" x-text="actorName()"></span>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showCompleteModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Cancel</button>
+      <button @click="showCompleteModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">取消</button>
       <button @click="completeProject()" :disabled="selectedFacts.length === 0 || !completeForm.description"
-        class="px-5 py-2 text-sm bg-teal-500 text-white rounded-xl font-medium hover:bg-teal-600 transition disabled:opacity-30 shadow-sm shadow-teal-200">Complete</button>
+        class="px-5 py-2 text-sm bg-teal-500 text-white rounded-xl font-medium hover:bg-teal-600 transition disabled:opacity-30 shadow-sm shadow-teal-200">完成</button>
     </div>
   </div>
 </div>
@@ -901,17 +915,17 @@
 <!-- Hint -->
 <div x-show="showHintModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showHintModal = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-4">Add Hint</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-4">添加提示</h3>
     <div class="space-y-3">
-      <textarea x-model="hintForm.content" placeholder="Strategy advice or note..." rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
+      <textarea x-model="hintForm.content" placeholder="策略建议或备注…" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
       <div class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-500">
-        Actor: <span class="font-medium text-slate-700" x-text="actorName()"></span>
+        操作者：<span class="font-medium text-slate-700" x-text="actorName()"></span>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showHintModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Cancel</button>
+      <button @click="showHintModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">取消</button>
       <button @click="addHint()" :disabled="!hintForm.content"
-        class="px-5 py-2 text-sm bg-amber-500 text-white rounded-xl font-medium hover:bg-amber-600 transition disabled:opacity-30 shadow-sm shadow-amber-200">Add</button>
+        class="px-5 py-2 text-sm bg-amber-500 text-white rounded-xl font-medium hover:bg-amber-600 transition disabled:opacity-30 shadow-sm shadow-amber-200">添加</button>
     </div>
 </div>
 </div>
@@ -919,18 +933,18 @@
 <!-- Reopen -->
 <div x-show="showReopenModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showReopenModal = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-1">Reopen Project</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-1">重新打开项目</h3>
     <p class="text-xs text-slate-400 mb-4" x-text="projectLabel(reopenForm.projectId, reopenForm.projectTitle)"></p>
     <div class="space-y-3">
-      <textarea x-model="reopenForm.description" placeholder="Why is this project not actually complete?" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
+      <textarea x-model="reopenForm.description" placeholder="为什么该项目尚未真正完成？" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300"></textarea>
       <div class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-500">
-        Actor: <span class="font-medium text-slate-700" x-text="actorName()"></span>
+        操作者：<span class="font-medium text-slate-700" x-text="actorName()"></span>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showReopenModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Cancel</button>
+      <button @click="showReopenModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">取消</button>
       <button @click="reopenProject()" :disabled="!reopenForm.projectId || !reopenForm.description"
-        class="px-5 py-2 text-sm bg-sky-500 text-white rounded-xl font-medium hover:bg-sky-600 transition disabled:opacity-30 shadow-sm shadow-sky-200">Reopen</button>
+        class="px-5 py-2 text-sm bg-sky-500 text-white rounded-xl font-medium hover:bg-sky-600 transition disabled:opacity-30 shadow-sm shadow-sky-200">重新打开</button>
     </div>
   </div>
 </div>
@@ -938,16 +952,16 @@
 <!-- Rename Project -->
 <div x-show="showRenameModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showRenameModal = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-1">Rename Project</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-1">重命名项目</h3>
     <p class="text-xs text-slate-400 mb-4" x-text="projectLabel(renameForm.projectId, renameForm.originalTitle)"></p>
     <div class="space-y-3">
-      <input x-ref="renameTitleInput" x-model="renameForm.title" @keydown.enter.prevent="renameProject()" placeholder="Project title" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
-      <p class="text-[11px] text-slate-400">This only changes the project title and is allowed in any project status.</p>
+      <input x-ref="renameTitleInput" x-model="renameForm.title" @keydown.enter.prevent="renameProject()" placeholder="项目标题" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
+      <p class="text-[11px] text-slate-400">仅修改项目标题，所有项目状态下均可执行。</p>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showRenameModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Cancel</button>
+      <button @click="showRenameModal = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">取消</button>
       <button @click="renameProject()" :disabled="!renameForm.projectId || !renameForm.title"
-        class="px-5 py-2 text-sm bg-slate-800 text-white rounded-xl font-medium hover:bg-slate-900 transition disabled:opacity-30 shadow-sm">Save</button>
+        class="px-5 py-2 text-sm bg-slate-800 text-white rounded-xl font-medium hover:bg-slate-900 transition disabled:opacity-30 shadow-sm">保存</button>
     </div>
   </div>
 </div>
@@ -955,28 +969,28 @@
 <!-- Local Preferences -->
 <div x-show="showLocalPrefs" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showLocalPrefs = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-4">Local Preferences</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-4">本地偏好</h3>
     <div class="space-y-4">
       <div>
-        <label class="text-[11px] text-slate-400 mb-1 block font-medium">Actor</label>
-        <input x-model="localPrefs.actor_name" placeholder="Your name" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
+        <label class="text-[11px] text-slate-400 mb-1 block font-medium">操作者</label>
+        <input x-model="localPrefs.actor_name" placeholder="你的名称" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition placeholder:text-slate-300">
       </div>
       <div>
-        <label class="text-[11px] text-slate-400 mb-1 block font-medium">Default layout</label>
+        <label class="text-[11px] text-slate-400 mb-1 block font-medium">默认布局</label>
         <select x-model="localPrefs.layout_mode" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition">
-          <option value="dagre_tb">Dagre ↓</option>
-          <option value="dagre_lr">Dagre →</option>
-          <option value="klay_tb">Klay ↓</option>
-          <option value="klay_lr">Klay →</option>
-          <option value="elk_tb">ELK ↓</option>
-          <option value="elk_lr">ELK →</option>
+          <option value="dagre_tb">Dagre ↓ 自上而下</option>
+          <option value="dagre_lr">Dagre → 自左向右</option>
+          <option value="klay_tb">Klay ↓ 自上而下</option>
+          <option value="klay_lr">Klay → 自左向右</option>
+          <option value="elk_tb">ELK ↓ 自上而下</option>
+          <option value="elk_lr">ELK → 自左向右</option>
         </select>
       </div>
-      <p class="text-[11px] text-slate-400">Stored only in this browser.</p>
+      <p class="text-[11px] text-slate-400">仅在当前浏览器内保存。</p>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showLocalPrefs = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Close</button>
-      <button @click="saveLocalSettings()" class="px-4 py-2 text-sm bg-slate-800 text-white rounded-xl font-medium hover:bg-slate-900 transition shadow-sm">Save Local</button>
+      <button @click="showLocalPrefs = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">关闭</button>
+      <button @click="saveLocalSettings()" class="px-4 py-2 text-sm bg-slate-800 text-white rounded-xl font-medium hover:bg-slate-900 transition shadow-sm">保存到本地</button>
     </div>
   </div>
 </div>
@@ -984,19 +998,19 @@
 <!-- Settings -->
 <div x-show="showSettings" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overlay" @click.self="showSettings = false">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 border border-slate-200/60" @click.stop>
-    <h3 class="text-base font-semibold text-slate-700 mb-4">Server Settings</h3>
+    <h3 class="text-base font-semibold text-slate-700 mb-4">服务端设置</h3>
     <div>
-      <label class="text-[11px] text-slate-400 mb-1 block font-medium">Intent timeout (seconds)</label>
+      <label class="text-[11px] text-slate-400 mb-1 block font-medium">意图超时（秒）</label>
       <input type="number" x-model.number="settingsForm.intent_timeout" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition">
     </div>
     <div class="mt-4">
-      <label class="text-[11px] text-slate-400 mb-1 block font-medium">Reason timeout (seconds)</label>
+      <label class="text-[11px] text-slate-400 mb-1 block font-medium">推理超时（秒）</label>
       <input type="number" x-model.number="settingsForm.reason_timeout" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-100 focus:border-brand-400 transition">
-      <p class="text-[11px] text-slate-400 mt-2">Shared backend configuration.</p>
+      <p class="text-[11px] text-slate-400 mt-2">服务端共享配置。</p>
     </div>
     <div class="flex justify-end gap-2 mt-5">
-      <button @click="showSettings = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Close</button>
-      <button @click="saveServerSettings()" class="px-4 py-2 text-sm bg-brand-500 text-white rounded-xl font-medium hover:bg-brand-600 transition shadow-sm shadow-brand-200">Save Server</button>
+      <button @click="showSettings = false" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">关闭</button>
+      <button @click="saveServerSettings()" class="px-4 py-2 text-sm bg-brand-500 text-white rounded-xl font-medium hover:bg-brand-600 transition shadow-sm shadow-brand-200">保存到服务端</button>
     </div>
   </div>
 </div>
@@ -1010,13 +1024,15 @@
           <button @click="switchExportTab('yaml')" class="px-2.5 py-1 text-xs font-medium transition"
             :class="exportTab === 'yaml' ? 'bg-slate-100 text-slate-700' : 'text-slate-400 hover:text-slate-600'">YAML</button>
           <button @click="switchExportTab('timeline')" class="px-2.5 py-1 text-xs font-medium transition"
-            :class="exportTab === 'timeline' ? 'bg-slate-100 text-slate-700' : 'text-slate-400 hover:text-slate-600'">Timeline</button>
+            :class="exportTab === 'timeline' ? 'bg-slate-100 text-slate-700' : 'text-slate-400 hover:text-slate-600'">时间线</button>
+          <button @click="switchExportTab('report')" class="px-2.5 py-1 text-xs font-medium transition"
+            :class="exportTab === 'report' ? 'bg-slate-100 text-slate-700' : 'text-slate-400 hover:text-slate-600'">中文报告</button>
         </div>
         <p class="text-xs text-slate-400 truncate" x-text="yamlPreviewTitle"></p>
       </div>
       <div class="flex items-center gap-2">
-        <button @click="copyYamlPreview()" class="px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Copy</button>
-        <button @click="showYamlModal = false" class="px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">Close</button>
+        <button @click="copyYamlPreview()" class="px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">复制</button>
+        <button @click="showYamlModal = false" class="px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition">关闭</button>
       </div>
     </div>
     <div class="max-h-[75vh] overflow-auto bg-slate-50 p-4">
@@ -1035,18 +1051,18 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4.75A1.75 1.75 0 0 1 9.75 3h4.5A1.75 1.75 0 0 1 16 4.75V6"/><path d="M19 6l-.63 11.338A2 2 0 0 1 16.37 19.5H7.63a2 2 0 0 1-1.997-2.162L5 6"/><path d="M10 10.5v5"/><path d="M14 10.5v5"/></svg>
       </div>
       <div class="min-w-0 flex-1">
-        <h3 class="text-base font-semibold text-slate-700">Delete Project</h3>
+        <h3 class="text-base font-semibold text-slate-700">删除项目</h3>
         <p class="text-sm text-slate-500 mt-1 leading-relaxed">
-          This will permanently remove
-          <span class="font-medium text-slate-700 break-all" x-text="deleteConfirmLabel()"></span>.
+          将永久删除
+          <span class="font-medium text-slate-700 break-all" x-text="deleteConfirmLabel()"></span>。
         </p>
-        <p class="text-xs text-slate-400 mt-3">This action cannot be undone.</p>
+        <p class="text-xs text-slate-400 mt-3">此操作不可撤销。</p>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-6">
-      <button @click="closeDeleteModal()" :disabled="isDeletingProject" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed">Cancel</button>
+      <button @click="closeDeleteModal()" :disabled="isDeletingProject" class="px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed">取消</button>
       <button @click="confirmDeleteProject()" :disabled="isDeletingProject" class="px-4 py-2 text-sm bg-rose-500 text-white rounded-xl font-medium hover:bg-rose-600 transition shadow-sm shadow-rose-200 disabled:opacity-40 disabled:cursor-not-allowed">
-        <span x-text="isDeletingProject ? 'Deleting...' : 'Delete'"></span>
+        <span x-text="isDeletingProject ? '删除中...' : '删除'"></span>
       </button>
     </div>
   </div>
@@ -1269,13 +1285,43 @@ function cairnApp() {
 
     reasonBadgeText(reason, compact = false) {
       if (!reason) return '';
-      if (compact) return `Reason · ${reason.worker}`;
-      const trigger = reason.trigger ? ` (${reason.trigger})` : '';
-      return `Reasoning · ${reason.worker}${trigger}`;
+      if (compact) return `推理 · ${reason.worker}`;
+      const triggerLabel = this.reasonTriggerLabel(reason.trigger);
+      const trigger = triggerLabel ? `（${triggerLabel}）` : '';
+      return `推理中 · ${reason.worker}${trigger}`;
     },
 
     workingIntentBadgeText(count) {
-      return `Exploring · ${count}`;
+      return `探索中 · ${count}`;
+    },
+
+    reasonTriggerLabel(trigger) {
+      if (!trigger) return '';
+      const labels = {
+        heartbeat: '心跳',
+        trigger: '触发',
+        manual: '手动',
+        timer: '定时',
+      };
+      return labels[trigger] || trigger;
+    },
+
+    projectStatusLabel(status) {
+      const labels = {
+        active: '进行中',
+        stopped: '已暂停',
+        completed: '已完成',
+      };
+      return labels[status] || status || '';
+    },
+
+    async viewProjectReport(projectId, projectTitle) {
+      if (!projectId) return;
+      this.exportProjectId = projectId;
+      this.yamlPreviewTitle = this.projectLabel(projectId, projectTitle);
+      this.exportTab = 'report';
+      await this.loadExportTab('report');
+      this.showYamlModal = true;
     },
 
     isBootstrapIntent(intent) {
@@ -1296,7 +1342,7 @@ function cairnApp() {
     },
 
     openIntentNodeLabel(intent) {
-      return this.isBootstrapIntent(intent) ? 'Bootstrap' : '?';
+      return this.isBootstrapIntent(intent) ? '启动' : '?';
     },
 
     openIntentNodeSize(intent) {
@@ -1404,14 +1450,14 @@ function cairnApp() {
     async copyYamlPreview() {
       if (!this.yamlPreviewText) return;
       if (!navigator.clipboard?.writeText) {
-        this.showToast('Copy not supported', 'error');
+        this.showToast('当前环境不支持复制', 'error');
         return;
       }
       try {
         await navigator.clipboard.writeText(this.yamlPreviewText);
-        this.showToast('Copied');
+        this.showToast('已复制');
       } catch {
-        this.showToast('Copy failed', 'error');
+        this.showToast('复制失败', 'error');
       }
     },
 
@@ -1514,12 +1560,24 @@ function cairnApp() {
     async loadExportTab(tab) {
       if (!this.exportProjectId) return;
       try {
-        const text = await this.fetchText(`/projects/${this.exportProjectId}/export?format=${tab}`);
+        const queryFormat = tab === 'report' ? 'report_zh' : tab;
+        const text = await this.fetchText(`/projects/${this.exportProjectId}/export?format=${queryFormat}`);
         this.yamlPreviewText = text;
-        this.yamlPreviewHtml = tab === 'yaml' ? this.highlightYaml(text) : this.highlightTimeline(text);
+        if (tab === 'yaml') {
+          this.yamlPreviewHtml = this.highlightYaml(text);
+        } else if (tab === 'timeline') {
+          this.yamlPreviewHtml = this.highlightTimeline(text);
+        } else {
+          this.yamlPreviewHtml = this.renderReportZh(text);
+        }
       } catch (e) {
         this.showToast(e.message, 'error');
       }
+    },
+
+    renderReportZh(text) {
+      const escaped = this.escapeHtml(text || '');
+      return `<pre style="margin:0;padding:18px;white-space:pre-wrap;word-break:break-word;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;font-size:13px;line-height:1.7;color:#0f172a;background:#ffffff;">${escaped}</pre>`;
     },
 
     deleteProject() {
@@ -1543,7 +1601,7 @@ function cairnApp() {
         } else {
           await this.loadProjects();
         }
-        this.showToast(`Deleted ${projectId}`);
+        this.showToast(`已删除 ${projectId}`);
       } catch (e) {
         this.showToast(e.message, 'error');
       } finally {
@@ -1665,15 +1723,15 @@ function cairnApp() {
         this.showRenameModal = false;
         this.renameForm = { projectId: '', originalTitle: '', title: '' };
         await this.loadProjects();
-        this.showToast('Project renamed');
+        this.showToast('项目已重命名');
       } catch (e) {
         this.showToast(e.message, 'error');
       }
     },
 
     replayProgressLabel() {
-      if (!this.replay.active || this.replay.frames.length === 0) return 'Replay';
-      return `Replay ${Math.min(this.replay.frameIndex + 1, this.replay.frames.length)} / ${this.replay.frames.length}`;
+      if (!this.replay.active || this.replay.frames.length === 0) return '回放';
+      return `回放 ${Math.min(this.replay.frameIndex + 1, this.replay.frames.length)} / ${this.replay.frames.length}`;
     },
 
     stopReplayTimer() {
@@ -1757,7 +1815,7 @@ function cairnApp() {
           title: sourceIntent?.description || event.title,
           meta: [
             sourceIntent?.id || event.intentId,
-            `from ${(sourceIntent?.from || event.sourceFactIds || []).join(', ')}`,
+            `来源 ${(sourceIntent?.from || event.sourceFactIds || []).join(', ')}`,
           ],
           targetType: 'reason',
           targetId: sourceIntent?.id || event.intentId,
@@ -1774,7 +1832,7 @@ function cairnApp() {
           timestamp: sourceIntent.last_heartbeat_at || sourceIntent.created_at,
           actor: sourceIntent.worker,
           title: sourceIntent.description,
-          meta: [sourceIntent.id, `worker ${sourceIntent.worker}`],
+          meta: [sourceIntent.id, `执行者 ${sourceIntent.worker}`],
           targetType: 'intent',
           targetId: sourceIntent.id,
           order: `${event.order}.run`,
@@ -1925,7 +1983,7 @@ function cairnApp() {
         }));
         const frames = this.buildReplayFrames(sourceProject, baseEvents);
         if (frames.length === 0) {
-          this.showToast('No timeline to replay', 'error');
+          this.showToast('暂无可回放的时间线', 'error');
           return;
         }
 
@@ -2036,7 +2094,7 @@ function cairnApp() {
           await this.loadProject(projectId);
           this.updateGraph();
         }
-        this.showToast('Project reopened');
+        this.showToast('项目已重新打开');
       } catch (e) {
         this.showToast(e.message, 'error');
       }
@@ -2445,8 +2503,8 @@ function cairnApp() {
     },
 
     summarizeFactLabel(fact) {
-      if (fact.id === 'origin') return 'Origin';
-      if (fact.id === 'goal') return 'Goal';
+      if (fact.id === 'origin') return '起点';
+      if (fact.id === 'goal') return '目标';
       const normalized = fact.description.replace(/\s+/g, ' ').trim();
       const chars = Array.from(normalized);
       if (chars.length <= 24) return normalized || fact.id;
@@ -2836,9 +2894,9 @@ function cairnApp() {
 
     selectedIntentPrimaryActionLabel() {
       const intent = this.selectedOpenIntentRecord();
-      if (!intent) return 'Claim';
-      if (!intent.worker) return 'Claim';
-      return intent.worker === this.actorName() ? 'Heartbeat' : 'Claimed';
+      if (!intent) return '认领';
+      if (!intent.worker) return '认领';
+      return intent.worker === this.actorName() ? '心跳' : '已被认领';
     },
 
     getFactRecord(fid) {
@@ -2856,9 +2914,9 @@ function cairnApp() {
       return i.worker ? 'text-amber-600' : 'text-slate-400';
     },
     intentStatusLabel(i) {
-      if (i.to) return 'Concluded';
-      if (this.isBootstrapIntent(i)) return i.worker ? 'Bootstrap Running' : 'Bootstrap Pending';
-      return i.worker ? 'In Progress' : 'Unclaimed';
+      if (i.to) return '已结案';
+      if (this.isBootstrapIntent(i)) return i.worker ? '启动中' : '启动待执行';
+      return i.worker ? '进行中' : '未认领';
     },
 
     timelineEvents() {
@@ -2877,7 +2935,7 @@ function cairnApp() {
         timestamp: this.project.project.created_at,
         actor: 'system',
         title: this.project.project.title,
-        meta: [origin ? origin.description : null, goal ? `goal: ${goal.description}` : null].filter(Boolean),
+        meta: [origin ? origin.description : null, goal ? `目标：${goal.description}` : null].filter(Boolean),
         targetType: 'fact',
         targetId: 'origin',
         order: order++,
@@ -2910,7 +2968,7 @@ function cairnApp() {
           timestamp: intent.created_at,
           actor: intent.creator,
           title: intent.description,
-          meta: [intent.id, `from ${intent.from.join(', ')}`],
+          meta: [intent.id, `来源 ${intent.from.join(', ')}`],
           targetType: 'intent',
           targetId: intent.id,
           order: order++,
@@ -2928,7 +2986,7 @@ function cairnApp() {
             timestamp: intent.concluded_at,
             actor: intent.worker || intent.creator,
             title: intent.description,
-            meta: [intent.id, `from ${intent.from.join(', ')}`],
+            meta: [intent.id, `来源 ${intent.from.join(', ')}`],
             targetType: 'fact',
             targetId: 'goal',
             order: order++,
@@ -2946,7 +3004,7 @@ function cairnApp() {
           timestamp: intent.concluded_at,
           actor: intent.worker || intent.creator,
           title: fact ? fact.description : intent.description,
-          meta: [intent.id, `produced ${intent.to}`, `from ${intent.from.join(', ')}`],
+          meta: [intent.id, `产生 ${intent.to}`, `来源 ${intent.from.join(', ')}`],
           targetType: 'fact',
           targetId: intent.to,
           order: order++,
@@ -3038,15 +3096,15 @@ function cairnApp() {
 
     timelineEventBadge(entry) {
       const labels = {
-        project_created: 'Project',
-        hint_added: 'Hint',
-        reason_started: 'Reason',
-        intent_declared: 'Intent',
-        intent_running: 'Execute',
-        intent_concluded: 'Conclude',
-        project_completed: 'Complete',
+        project_created: '项目创建',
+        hint_added: '提示',
+        reason_started: '推理',
+        intent_declared: '意图',
+        intent_running: '执行',
+        intent_concluded: '结案',
+        project_completed: '完成',
       };
-      return labels[entry.type] || 'Event';
+      return labels[entry.type] || '事件';
     },
 
     timelineEventBadgeClass(entry) {
@@ -3248,7 +3306,7 @@ function cairnApp() {
         this.newProject = { title:'', origin:'', goal:'', hints: [{ content:'' }] };
         await this.loadProjects();
         await this.openProject(data.project.id);
-        this.showToast('Project created');
+        this.showToast('项目已创建');
       } catch(e) { this.showToast(e.message, 'error'); }
     },
 
@@ -3295,7 +3353,7 @@ function cairnApp() {
         await this.api('POST', `/projects/${this.selectedProjectId}/intents/${intent.id}/release`, { worker: actor });
         await this.loadProject(this.selectedProjectId);
         this.updateGraph();
-        this.showToast('Intent released');
+        this.showToast('意图已释放');
       } catch(e) { this.showToast(e.message, 'error'); }
     },
 
@@ -3309,7 +3367,7 @@ function cairnApp() {
         this.selectedNode = null;
         await this.loadProject(this.selectedProjectId);
         this.updateGraph();
-        this.showToast('Intent concluded');
+        this.showToast('意图已结案');
       } catch(e) { this.showToast(e.message, 'error'); }
     },
 
@@ -3333,7 +3391,7 @@ function cairnApp() {
         await this.loadProjects();
         await this.loadProject(this.selectedProjectId);
         this.updateGraph();
-        this.showToast('Project completed');
+        this.showToast('项目已完成');
       } catch(e) { this.showToast(e.message, 'error'); }
     },
 
@@ -3347,7 +3405,7 @@ function cairnApp() {
         await this.loadProjects();
         await this.loadProject(this.selectedProjectId);
         this.sideTab = 'hints';
-        this.showToast('Hint added');
+        this.showToast('提示已添加');
       } catch(e) { this.showToast(e.message, 'error'); }
     },
 
@@ -3359,7 +3417,7 @@ function cairnApp() {
         this.saveLocalPrefs();
         if (this.cy) this.cy.layout(this.layoutOpts()).run();
         this.showLocalPrefs = false;
-        this.showToast('Local preferences saved');
+        this.showToast('本地偏好已保存');
       } catch(e) { this.showToast(e.message, 'error'); }
     },
 
@@ -3367,7 +3425,7 @@ function cairnApp() {
       try {
         await this.api('PUT', '/settings', this.settingsForm);
         this.showSettings = false;
-        this.showToast('Server settings saved');
+        this.showToast('服务端设置已保存');
       } catch(e) { this.showToast(e.message, 'error'); }
     },
   };

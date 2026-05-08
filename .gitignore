@@ -3,3 +3,8 @@
 __pycache__/
 .playwright-cli/
 datas/
+findings/
+node_modules/
+cairn-web/dist/
+cairn-web/.vite/
+*.tsbuildinfo

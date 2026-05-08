@@ -21,6 +21,11 @@ Only return the following after you have confirmed that Goal has been satisfied:
 - `fact.description` must clearly state the confirmed key objective results. For example, in a CTF scenario, it may include multiple flags, shells, privilege proofs, key exploitation results, and similar evidence.
 - `complete.description` should explain why the currently confirmed results are sufficient to prove that Goal has been achieved.
 - Do not put long data blobs in `description`. Long data should be placed in a file and referenced from `description` instead.
+- **Evidence is mandatory.** For EVERY key finding written in `fact.description` (and any factual claim in `complete.description`), you MUST attach the exact, fully reproducible evidence that produced it. This is a non-negotiable requirement intended for auditing and reproduction:
+  - For HTTP-based findings, include the complete raw HTTP request: method, full URL (including query string), all relevant request headers (Host, Cookie, Authorization, Content-Type, User-Agent, etc.), and the full request body when applicable. If the response is what proves the finding, also quote the decisive parts of the response (status line, key headers, and the relevant body excerpt).
+  - For tool/CLI-based findings, include the complete command line that was actually executed, with every flag, argument, working directory and environment variable that materially affects the result. Quote the decisive output lines that prove the finding.
+  - Use fenced code blocks (```http or ```bash etc.) and clearly associate each finding with its evidence block. Do NOT paraphrase, redact, or summarize the request/command in a way that loses reproducibility — if a value is too long, store it in a file and reference both the file path and the original retrieval command.
+  - A `description` that lists key findings without their corresponding raw HTTP request or full command line is considered incomplete and unacceptable.
 
 # Context
 ## Origin

@@ -1,0 +1,36 @@
+{
+  "name": "neonexus-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vue 3 + TypeScript front-end for NeoNexus",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "vue": "^3.4.38",
+    "vue-router": "^4.4.5",
+    "pinia": "^2.2.2",
+    "cytoscape": "^3.30.2",
+    "cytoscape-dagre": "^2.5.0",
+    "dagre": "^0.8.5",
+    "cytoscape-klay": "^3.1.4",
+    "klayjs": "^0.4.1",
+    "cytoscape-elk": "^2.2.0",
+    "elkjs": "^0.9.3"
+  },
+  "devDependencies": {
+    "@types/cytoscape": "^3.21.8",
+    "@types/node": "^22.5.5",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vue-tsc": "^2.1.6"
+  }
+}

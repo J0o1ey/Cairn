@@ -23,6 +23,11 @@ Normal return example:
 - This JSON summary is your final output for this phase. After outputting it, stop.
 - `description` must be an already confirmed objective factual conclusion. Do not output plans, guesses, or explanatory filler. Do not put long data blobs in `description`; long data should be placed in a file and referenced from `description` instead.
 - `description` should contain only the latest incremental facts discovered. Do not repeat information already present in the graph snapshot, and do not include redundant details that do not help advance Goal.
+- **Evidence is mandatory.** For EVERY key finding inside `description`, you MUST attach the exact, fully reproducible evidence that originally produced it during this session. This is a non-negotiable requirement intended for auditing and reproduction:
+  - For HTTP-based findings, include the complete raw HTTP request: method, full URL (including query string), all relevant request headers (Host, Cookie, Authorization, Content-Type, User-Agent, etc.), and the full request body when applicable. Also quote the decisive parts of the response (status line, key headers, and the relevant body excerpt) if the response is what proves the finding.
+  - For tool/CLI-based findings, include the complete command line that was actually executed, with every flag, argument, working directory and environment variable that materially affects the result. Quote the decisive output lines that prove the finding.
+  - Use fenced code blocks (```http or ```bash etc.) and clearly associate each finding with its evidence block. Do NOT paraphrase, redact, or summarize the request/command in a way that loses reproducibility — if a value is too long, store it in a file and reference both the file path and the original retrieval command.
+  - If a previously claimed finding has no preserved raw request or full command line, you MUST either drop it or downgrade it to an explicit "unverified" note rather than silently restating it. Do not fabricate evidence.
 
 # Context
 ## Graph
