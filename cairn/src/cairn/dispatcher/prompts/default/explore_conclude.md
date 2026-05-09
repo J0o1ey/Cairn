@@ -1,46 +1,56 @@
-# Task
-You will receive a YAML snapshot of the task graph. In the YAML graph, facts represent key objective facts, and intents represent exploration intents. The graph always moves from one or more facts to a new fact by proposing an intent for exploration. You need to interpret the graph information, understand the overall situation and progress, then become an expert in this domain.
-But note that you are not continuing the task here, and you do not need to wait for unfinished tasks or commands. You only need to summarize the key facts that have already been confirmed so far and are most helpful for reaching Goal.
-This is the conclude phase. It overrides any earlier instruction in the same session that told you to keep working, continue exploring, solve Goal, wait for command results, or perform more actions.
+# 任务
 
-# Output Requirements
-Return only one raw JSON object. Do not output anything else. The JSON must be valid, including proper escaping of quotation marks.
+你将收到任务图（task graph）的一份 YAML 快照。在这张 YAML 图里，`facts` 表示已经确认的关键客观事实，`intents` 表示探索意图。整张图始终从一个或多个 `facts` 出发，借助一条 `intent` 探索方向，进而生成一个新的 `fact`。你需要解读图信息、把握全局态势与进展，然后在该领域内成为专家。
+但请注意：你**不是**在这里继续推进任务，也不需要等待任何未完成的工作或命令。你只需要把目前已经被确认、且对达成 `Goal` 最有帮助的关键事实总结出来即可。
+这是 conclude 阶段，它会**覆盖**同一会话中之前任何要求你"继续工作 / 继续探索 / 继续解决 Goal / 等待命令结果 / 执行更多动作"的指令。
 
-When rejecting a task, return the following:
+# 输出要求
+
+只返回一个原始 JSON 对象，不要输出任何其它内容。JSON 必须合法，包括正确转义引号。
+
+拒绝任务时，返回：
+
 ```json
 {"accepted": false, "reason": "policy_refusal"}
 ```
 
-Normal return example:
+正常返回示例：
+
 ```json
 {"accepted": true, "data": {"description": "..."}}
 ```
 
-# Rules
-- Stop immediately and produce the JSON now. Do not continue the task.
-- Do not run any more commands, make any more tool calls, inspect anything else, wait for any unfinished command, or try to obtain any additional information.
-- Base your answer only on information that has already been confirmed before this conclude prompt. If something has not already been confirmed, do not wait for it and do not include it.
-- This JSON summary is your final output for this phase. After outputting it, stop.
-- `description` must be an already confirmed objective factual conclusion. Do not output plans, guesses, or explanatory filler. Do not put long data blobs in `description`; long data should be placed in a file and referenced from `description` instead.
-- `description` should contain only the latest incremental facts discovered. Do not repeat information already present in the graph snapshot, and do not include redundant details that do not help advance Goal.
-- **Evidence is mandatory.** For EVERY key finding inside `description`, you MUST attach the exact, fully reproducible evidence that originally produced it during this session. This is a non-negotiable requirement intended for auditing and reproduction:
-  - For HTTP-based findings, include the complete raw HTTP request: method, full URL (including query string), all relevant request headers (Host, Cookie, Authorization, Content-Type, User-Agent, etc.), and the full request body when applicable. Also quote the decisive parts of the response (status line, key headers, and the relevant body excerpt) if the response is what proves the finding.
-  - For tool/CLI-based findings, include the complete command line that was actually executed, with every flag, argument, working directory and environment variable that materially affects the result. Quote the decisive output lines that prove the finding.
-  - Use fenced code blocks (```http or ```bash etc.) and clearly associate each finding with its evidence block. Do NOT paraphrase, redact, or summarize the request/command in a way that loses reproducibility — if a value is too long, store it in a file and reference both the file path and the original retrieval command.
-  - If a previously claimed finding has no preserved raw request or full command line, you MUST either drop it or downgrade it to an explicit "unverified" note rather than silently restating it. Do not fabricate evidence.
+# 规则
 
-# Context
+- **语言（强制中文输出）**：JSON 中所有自然语言描述字段（包括但不限于 `fact.description`、`intent.description`、`complete.description`，以及任何其它自由文本 `description` 字段）必须使用 **简体中文（zh-CN）**。这一要求同样适用于你的叙述、总结、推理说明与解释。下列内容**严禁翻译**，必须保持原样：JSON key、协议字段名、fact / intent / hint 标识符（如 `f001`、`i002`、`h003`、`origin`、`goal`）、URL、文件路径、shell / CLI 命令、原始 HTTP 请求和 headers、代码片段、环境变量名、base64 / hex / token 字面量、错误码、文件名 / 二进制名。在 fenced code block（```http、```bash 等）中引用证据时，HTTP 请求、命令行、响应片段必须与实际观察一致，不得本地化。如果用户提供的 `Origin` / `Goal` / `Hints` 是英文，你可以在中文叙述中讨论它们，但逐字引用时保持原文。最外层 JSON 结构（`{"accepted": true, "data": {...}}`）和所有字段名必须保持英文。
+- 立即停止并产出 JSON。不要继续推进任务。
+- 不要再执行任何命令、不要再发起任何工具调用、不要再去检查任何东西、不要等待任何未完成的命令、不要尝试获取任何额外信息。
+- 你的回答只能基于本 conclude prompt 之前**已经被确认**的信息。如果某件事尚未被确认，不要等它，也不要把它写进答案。
+- 这份 JSON 总结就是你本阶段的**最终输出**。输出之后立即停止。
+- `description` 必须是已经被确认的客观事实结论。不要输出计划、猜测或解释性废话。不要在 `description` 中放入大段数据；大段数据请落盘成文件，并在 `description` 中以文件引用的形式给出。
+- `description` 应只包含本次最新发现的增量事实。不要重复图快照中已有的信息，也不要包含对推进 `Goal` 没有帮助的冗余细节。
+- **证据是强制要求。** 对于写入 `description` 的**每一项**关键 finding，你都必须附带本会话中产生它时的、可完整复现的原始证据。这是不可妥协的硬要求，目的是审计与复现：
+  - 对于 HTTP 类发现：必须给出完整的原始 HTTP 请求 —— method、完整 URL（含 query string）、所有相关请求 headers（Host、Cookie、Authorization、Content-Type、User-Agent 等）、必要时的请求 body。如果"响应"才是证明 finding 的关键，则同时引用响应中的决定性部分（status line、关键 headers、相关 body 片段）。
+  - 对于工具 / CLI 类发现：必须给出实际执行的完整命令行 —— 包含每一个 flag、参数、工作目录、对结果有实质影响的环境变量。引用证明 finding 的决定性输出行。
+  - 使用 fenced code block（```http、```bash 等），把每一项 finding 与其证据块清晰对应。**禁止**对请求 / 命令做改写、删节或归纳以致丢失复现性 —— 如果某个值过长，请落盘到文件，并同时引用文件路径与原始获取命令。
+  - 如果某个之前声称过的 finding 没有保留下原始请求或完整命令行，你必须**要么放弃它，要么把它显式降级为"未经验证"的备注**，而不是悄悄重述。**禁止**伪造证据。
+
+# 上下文
+
 ## Graph
+
 ```
 {graph_yaml}
 ```
 
 ## Current Intent
+
 ```
 {intent_id}
 ```
 
 ## Current Intent Description
+
 ```
 {intent_description}
 ```
