@@ -40,6 +40,7 @@ DEFAULT_PROMPT_REQUIRED_TOKENS: dict[str, tuple[str, ...]] = {
     "explore_conclude.md": ("{graph_yaml}", "{intent_id}", "{intent_description}"),
     "bootstrap.md": ("{origin}", "{goal}", "{hints}"),
     "bootstrap_conclude.md": ("{origin}", "{goal}", "{hints}"),
+    "report.md": ("{project_title}", "{origin}", "{goal}", "{hints}", "{graph_yaml}"),
 }
 
 PROMPT_REQUIRED_TOKENS_BY_GROUP: dict[str, dict[str, tuple[str, ...]]] = {
@@ -49,6 +50,8 @@ PROMPT_REQUIRED_TOKENS_BY_GROUP: dict[str, dict[str, tuple[str, ...]]] = {
         "explore_conclude.md": ("{intent_id}",),
         "bootstrap.md": ("{origin}", "{goal}", "{hints}"),
         "bootstrap_conclude.md": ("{origin}", "{goal}", "{hints}"),
+        # report.md 在 mock 套件中可选；如果存在则要求至少包含 graph_yaml 占位符。
+        # 不强制存在，缺失也不报错（此处只声明非空时的最小契约）。
     }
 }
 
@@ -59,6 +62,7 @@ MOCK_ALLOWED_OUTCOMES: dict[str, frozenset[str]] = {
     "explore_conclude": frozenset({"fact", "rejected", "invalid_json", "invalid_payload", "command_fail"}),
     "bootstrap": frozenset({"complete", "fact", "rejected", "invalid_json", "invalid_payload", "command_fail"}),
     "bootstrap_conclude": frozenset({"fact", "rejected", "invalid_json", "invalid_payload", "command_fail"}),
+    "report": frozenset({"markdown", "rejected", "invalid_json", "invalid_payload", "command_fail"}),
 }
 
 MOCK_DEFAULT_BEHAVIOR: dict[str, dict[str, Any]] = {
@@ -119,6 +123,16 @@ MOCK_DEFAULT_BEHAVIOR: dict[str, dict[str, Any]] = {
             "command_fail": "0.0",
         },
     },
+    "report": {
+        "delay": [0.05, 0.3],
+        "outcomes": {
+            "markdown": "1.0",
+            "rejected": "0.0",
+            "invalid_json": "0.0",
+            "invalid_payload": "0.0",
+            "command_fail": "0.0",
+        },
+    },
 }
 
 MOCK_ALLOWED_ENV_KEYS = frozenset(
@@ -141,10 +155,15 @@ class BootstrapTaskConfig(BaseModel):
     conclude_timeout: int = Field(gt=0)
 
 
+class ReportTaskConfig(BaseModel):
+    timeout: int = Field(gt=0, default=180)
+
+
 class TasksConfig(BaseModel):
     bootstrap: BootstrapTaskConfig
     reason: ReasonTaskConfig
     explore: ExploreTaskConfig
+    report: ReportTaskConfig = Field(default_factory=ReportTaskConfig)
 
 
 class ContainerConfig(BaseModel):

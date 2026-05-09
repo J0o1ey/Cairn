@@ -78,6 +78,17 @@ CREATE TABLE IF NOT EXISTS scoped_counters (
     value INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (project_id, kind)
 );
+
+CREATE TABLE IF NOT EXISTS project_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    generator TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS project_reports_by_project_created
+    ON project_reports(project_id, created_at);
 """
 
 

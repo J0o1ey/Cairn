@@ -240,3 +240,24 @@ class ReopenResponse(BaseModel):
     project: ProjectMeta
     fact: Fact
     intent: Intent
+
+
+class ProjectReport(BaseModel):
+    id: int
+    project_id: str
+    content: str
+    generator: str
+    created_at: str
+
+
+class CreateReportRequest(BaseModel):
+    content: str
+    generator: str
+
+    @field_validator("content", "generator")
+    @classmethod
+    def validate_non_empty_text(cls, value: str) -> str:
+        text = value.strip()
+        if not text:
+            raise ValueError("must not be empty")
+        return text

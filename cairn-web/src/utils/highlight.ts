@@ -115,7 +115,3 @@ export function highlightTimeline(text: string): string {
     .join('');
 }
 
-export function renderReportZh(text: string): string {
-  const escaped = escapeHtml(text || '');
-  return `<pre style="margin:0;padding:18px;white-space:pre-wrap;word-break:break-word;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;font-size:13px;line-height:1.7;color:#0f172a;background:#ffffff;">${escaped}</pre>`;
-}

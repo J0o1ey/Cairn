@@ -11,19 +11,25 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "vue": "^3.4.38",
-    "vue-router": "^4.4.5",
-    "pinia": "^2.2.2",
     "cytoscape": "^3.30.2",
     "cytoscape-dagre": "^2.5.0",
-    "dagre": "^0.8.5",
-    "cytoscape-klay": "^3.1.4",
-    "klayjs": "^0.4.1",
     "cytoscape-elk": "^2.2.0",
-    "elkjs": "^0.9.3"
+    "cytoscape-klay": "^3.1.4",
+    "dagre": "^0.8.5",
+    "dompurify": "^3.4.2",
+    "elkjs": "^0.9.3",
+    "highlight.js": "^11.11.1",
+    "klayjs": "^0.4.1",
+    "markdown-it": "^14.1.1",
+    "mermaid": "^11.14.0",
+    "pinia": "^2.2.2",
+    "vue": "^3.4.38",
+    "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@types/cytoscape": "^3.21.8",
+    "@types/dompurify": "^3.0.5",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.5.5",
     "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.20",

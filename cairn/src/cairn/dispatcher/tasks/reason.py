@@ -23,6 +23,7 @@ from cairn.dispatcher.tasks.common import (
     run_healthcheck,
     run_worker_process,
 )
+from cairn.dispatcher.tasks.report import maybe_generate_completion_report
 from cairn.dispatcher.workers.registry import get_driver
 from cairn.server.models import ProjectDetail
 
@@ -224,6 +225,16 @@ def run_reason_task(
                 data["from"],
                 execute_ms,
                 total_ms,
+            )
+            # 项目已完成 → 主动生成一份中文 Markdown 报告并写回 server。
+            # 失败仅记录 warning，不影响 reason 的 outcome。
+            maybe_generate_completion_report(
+                config,
+                client,
+                container_manager,
+                project.project.id,
+                worker,
+                source="reason.complete",
             )
             return "success"
         if kind == "intents":

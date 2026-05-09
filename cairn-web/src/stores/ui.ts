@@ -21,9 +21,12 @@ interface ExportPreview {
   tab: ExportTab;
   projectId: string;
   title: string;
+  /** YAML / Timeline / Markdown 报告 共用的源文本（用于"复制"按钮） */
   text: string;
-  /** 已渲染好的 HTML（含语法高亮）*/
+  /** YAML / Timeline 走 v-html 的预渲染高亮 HTML；report Tab 不使用 */
   html: string;
+  /** report Tab 使用的原始 markdown，由 MarkdownView 组件渲染 */
+  markdown: string;
   loading: boolean;
 }
 
@@ -56,6 +59,7 @@ export const useUiStore = defineStore('ui', {
       title: '',
       text: '',
       html: '',
+      markdown: '',
       loading: false,
     },
   }),
@@ -92,12 +96,14 @@ export const useUiStore = defineStore('ui', {
         title: payload.title,
         text: '',
         html: '',
+        markdown: '',
         loading: true,
       };
     },
-    setExportPreviewContent(text: string, html: string) {
+    setExportPreviewContent(text: string, html: string, markdown = '') {
       this.exportPreview.text = text;
       this.exportPreview.html = html;
+      this.exportPreview.markdown = markdown;
       this.exportPreview.loading = false;
     },
     setExportPreviewTab(tab: ExportTab) {

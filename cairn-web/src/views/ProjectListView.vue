@@ -267,7 +267,7 @@ async function stopAll() {
                 @click="viewReport(p, $event)"
                 class="h-8 px-2.5 rounded-lg border border-emerald-200 text-[11px] text-emerald-600 hover:bg-emerald-50 transition"
               >
-                中文报告
+                报告
               </button>
               <button
                 v-if="p.status !== 'completed'"

@@ -128,6 +128,14 @@ class CairnClient:
             json={"from": from_ids, "description": description, "creator": creator, "worker": None},
         )
 
+    def submit_report(self, project_id: str, content: str, generator: str) -> ApiResult:
+        """把 LLM 生成的中文 Markdown 项目报告写入 server，追加一条新记录。"""
+        return self._request_json(
+            "POST",
+            f"/projects/{project_id}/report",
+            json={"content": content, "generator": generator},
+        )
+
     def _request_json(self, method: str, path: str, json: dict[str, Any]) -> ApiResult:
         try:
             response = self._session().request(

@@ -36,6 +36,11 @@ tasks:
     timeout: 300
     # Time budget for conclude fallback used to summarize confirmed findings from the same session.
     conclude_timeout: 90
+  report:
+    # Time budget for generating the post-completion Chinese Markdown project report.
+    # Triggered automatically by the dispatcher right after a project transitions to completed
+    # (via reason.complete or bootstrap.complete). Failure does not block the completion itself.
+    timeout: 180
 
 container:
   # Base worker container. The dispatcher execs agent commands inside one container per project.

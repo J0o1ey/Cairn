@@ -698,6 +698,12 @@ class DispatcherLoop:
         for summary in summaries:
             if summary.status != "completed":
                 continue
+            # 该项目仍有运行中的 task（典型场景：reason / bootstrap 在 client.complete
+            # 之后还在生成完成报告），不要清理容器，否则 docker stop 会立刻 SIGKILL
+            # 容器内的报告进程，导致报告永远写不出来。等到 _reap_futures 收完该项目
+            # 所有 task 后，下一轮再清。
+            if self._project_running_task_count(summary.id) > 0:
+                continue
             container_name = self.container_manager.container_name(summary.id)
             if container_name in self._cleanup_pending:
                 continue
@@ -710,6 +716,10 @@ class DispatcherLoop:
     def _cleanup_stopped_containers(self, summaries: list[ProjectSummary]) -> None:
         for summary in summaries:
             if summary.status != "stopped":
+                continue
+            # 与 completed 同理：等该项目所有 in-flight task 自然结束（取消信号已经
+            # 由 _cancel_inactive_tasks 投递）后再做容器清理。
+            if self._project_running_task_count(summary.id) > 0:
                 continue
             container_name = self.container_manager.container_name(summary.id)
             if container_name in self._cleanup_pending:
@@ -748,10 +758,21 @@ class DispatcherLoop:
         self.runtime_project_ids.intersection_update(active_ids)
 
     def _cancel_inactive_tasks(self, summaries: list[ProjectSummary]) -> None:
+        """对项目状态变化的 in-flight task 做取消。
+
+        - `stopped` / `deleted`：用户/系统主动撤回，立刻发取消信号，让 worker
+          process 被 kill，腾出资源。
+        - `completed`：通常是 reason / bootstrap 任务**自己**刚把项目变 completed
+          的（最后一步 client.complete 成功）。此时该 task 多半还在做收尾工作
+          （例如生成中文 Markdown 报告），不能取消、否则报告进程会被 SIGKILL。
+          让它自然跑完即可，下一轮 _reap_futures 会收掉它。
+        """
         status_by_project = {summary.id: summary.status for summary in summaries}
         for task in self.futures.values():
             status = status_by_project.get(task.project_id, "deleted")
-            if status != "active" and task.cancellation.cancel(status):
+            if status in ("active", "completed"):
+                continue
+            if task.cancellation.cancel(status):
                 LOG.info(
                     "cancelling running task for inactive project project=%s task=%s worker=%s status=%s",
                     task.project_id,

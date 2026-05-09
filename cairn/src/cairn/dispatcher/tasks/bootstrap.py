@@ -25,6 +25,7 @@ from cairn.dispatcher.tasks.common import (
     write_conclude_result,
     write_conclude_result_with_fact_id,
 )
+from cairn.dispatcher.tasks.report import maybe_generate_completion_report
 from cairn.dispatcher.workers.registry import get_driver
 from cairn.server.models import Intent, ProjectDetail
 
@@ -183,7 +184,7 @@ def run_bootstrap_task(
                 )
                 best_effort_release(client, project.project.id, intent.id, worker.name)
                 return "rejected"
-            return _write_bootstrap_complete_result(
+            outcome = _write_bootstrap_complete_result(
                 client,
                 project.project.id,
                 intent.id,
@@ -194,6 +195,16 @@ def run_bootstrap_task(
                 phase_ms=execute_ms,
                 total_ms=int((time.perf_counter() - task_started) * 1000),
             )
+            if outcome == "success":
+                maybe_generate_completion_report(
+                    config,
+                    client,
+                    container_manager,
+                    project.project.id,
+                    worker,
+                    source="bootstrap.complete",
+                )
+            return outcome
         if did_timeout(first):
             LOG.warning(
                 "bootstrap timed out project=%s intent=%s worker=%s execute_ms=%s total_ms=%s stdout_preview=%s stderr_preview=%s",
@@ -487,3 +498,5 @@ def _write_bootstrap_complete_result(
             total_ms,
         )
     return "success"
+
+

@@ -168,3 +168,29 @@ def validate_explore_payload(payload: dict[str, Any]) -> tuple[str, str | None]:
     if not isinstance(description, str) or not description.strip():
         raise ValueError("description is required")
     return "fact", description.strip()
+
+
+def _looks_like_report_data(payload: dict[str, Any]) -> bool:
+    return isinstance(payload, dict) and set(payload) == {"markdown"}
+
+
+def validate_report_payload(payload: dict[str, Any]) -> tuple[str, str | None]:
+    """校验 report.md 的输出。
+
+    成功时返回 ("markdown", <markdown_text>)；
+    被模型拒绝时返回 ("rejected", None)；
+    其它结构性错误抛 ValueError。
+    """
+    accepted, data = _unwrap_wrapped_payload(payload)
+    if accepted is False:
+        return "rejected", None
+    if accepted is None:
+        if not _looks_like_report_data(payload):
+            raise ValueError("accepted must be true or false")
+        data = payload
+    if not isinstance(data, dict):
+        raise ValueError("accepted must be true or false")
+    markdown = data.get("markdown")
+    if not isinstance(markdown, str) or not markdown.strip():
+        raise ValueError("markdown is required")
+    return "markdown", markdown.strip()
