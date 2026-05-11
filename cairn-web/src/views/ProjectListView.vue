@@ -86,7 +86,7 @@ async function stopAll() {
           <img src="/favicon.svg" alt="" class="w-6 h-6 block" />
         </div>
         <div class="flex flex-col leading-tight">
-          <span class="brand-wordmark text-[17px]">NeoNexus</span>
+          <span class="brand-wordmark text-[17px]">NeoBreach</span>
           <span class="text-[10px] uppercase tracking-[0.18em] text-slate-400">Hack to evolve. Evolve to hack.</span>
         </div>
       </div>
@@ -155,7 +155,7 @@ async function stopAll() {
             <img src="/favicon.svg" alt="" class="w-12 h-12 block" />
           </div>
           <p class="text-2xl font-semibold tracking-tight">
-            <span class="brand-wordmark">NeoNexus</span>
+            <span class="brand-wordmark">NeoBreach</span>
             <span class="text-slate-500"> · 开启你的第一段探索</span>
           </p>
           <p class="text-sm mt-2 text-slate-400">从一个起点出发，定义目标，让事实图自我生长。</p>

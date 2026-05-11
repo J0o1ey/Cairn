@@ -204,12 +204,12 @@ function viewReport() {
       <router-link
         :to="{ name: 'list' }"
         class="hidden md:flex items-center gap-2.5 min-w-0"
-        title="回到 NeoNexus 首页"
+        title="回到 NeoBreach 首页"
       >
         <div class="brand-logo h-8 w-8 rounded-xl shrink-0 overflow-hidden">
           <img src="/favicon.svg" alt="" class="w-5 h-5 block" />
         </div>
-        <span class="brand-wordmark text-[15px] hidden lg:inline">NeoNexus</span>
+        <span class="brand-wordmark text-[15px] hidden lg:inline">NeoBreach</span>
         <span class="hidden lg:inline h-4 w-px bg-slate-200 mx-1"></span>
       </router-link>
       <div v-if="projects.project" class="flex items-center gap-2 min-w-0">
